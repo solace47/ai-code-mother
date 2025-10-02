@@ -1,0 +1,12 @@
+package com.spring.aicodemother.mapper;
+
+import com.mybatisflex.core.BaseMapper;
+import com.spring.aicodemother.model.entity.PointsRecord;
+
+/**
+ * 积分明细 映射层。
+ *
+ */
+public interface PointsRecordMapper extends BaseMapper<PointsRecord> {
+
+}
