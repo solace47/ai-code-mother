@@ -194,7 +194,8 @@
           <p>如有问题,可以通过以下方式联系:</p>
           <ul>
             <li>访问 GitHub 仓库提 Issue</li>
-            <li>发送邮件到 support@example.com</li>
+            <li>发送邮件到 lambor_xs@163.com</li>
+            <li>微信联系: solace47</li>
           </ul>
         </a-collapse-panel>
 
@@ -219,7 +220,7 @@
         <a-button type="primary" href="https://github.com/solace47/ai-code-mother" target="_blank">
           <GithubOutlined /> GitHub 仓库
         </a-button>
-        <a-button href="mailto:support@example.com">
+        <a-button href="mailto:lambor_xs@163.com">
           <MailOutlined /> 发送邮件
         </a-button>
       </a-space>
