@@ -1,4 +1,8 @@
 ### CUSTOM ###
+# macOS 系统文件
+.DS_Store
+**/.DS_Store
+
 # 排除包含敏感信息的 markdown 文件
 tasks/*.md
 deploy/README.md
