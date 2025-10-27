@@ -22,6 +22,7 @@ deploy/backup.sh
 # 排除生产环境配置文件
 application-local.yml
 application-prod.yml
+application-dev.yml
 application-local.properties
 *.env
 .env*
