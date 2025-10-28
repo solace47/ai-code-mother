@@ -17,6 +17,18 @@ spring:
       port: 6379  # 修改为你的 Redis 端口
       password:  # 如果 Redis 设置了密码，在此填写
       database: 0
+  # 邮件配置
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: your-email@example.com
+    password: your-email-password # 填写你的stmp授权码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
 
 # 添加 COS 对象存储配置（需要从腾讯云获取）
 cos:
