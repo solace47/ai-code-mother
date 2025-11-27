@@ -2,7 +2,7 @@
   <div class="doc-page">
     <h1 class="doc-title">快速开始</h1>
     <p class="doc-intro">
-      欢迎使用 AI Code Mother! 本指南将帮助你在几分钟内开始使用平台,无需任何编程经验即可生成你的第一个应用。
+      欢迎使用 NoCode! 本指南将帮助你在几分钟内开始使用平台,无需任何编程经验即可生成你的第一个应用。
     </p>
 
     <a-divider />

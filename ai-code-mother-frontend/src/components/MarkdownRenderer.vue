@@ -234,7 +234,7 @@ const renderedMarkdown = computed(() => {
   background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
 }
 
-/* 工具调用标签样式 - 使用 AI Code Mother 同款渐变 */
+/* 工具调用标签样式 - 使用 NoCode 同款渐变 */
 .markdown-content :deep(p > strong:first-child) {
   display: inline-flex;
   align-items: center;

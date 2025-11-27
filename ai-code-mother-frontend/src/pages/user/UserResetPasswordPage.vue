@@ -213,7 +213,9 @@ const handleSubmit = async () => {
 
 <style scoped>
 #userResetPasswordPage {
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
+  padding-top: 64px;
+  box-sizing: border-box;
   position: relative;
   display: flex;
   align-items: center;
@@ -232,15 +234,9 @@ const handleSubmit = async () => {
   background: transparent;
 }
 
-/* 浮动装饰元素 */
+/* 浮动装饰元素 - 登录页已取消气泡，这里也关闭 */
 .bg-shapes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
+  display: none;
 }
 
 .shape {
@@ -295,25 +291,27 @@ const handleSubmit = async () => {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 440px;
-  padding: 20px;
+  max-width: 920px;
+  padding: 24px;
 }
 
-/* 重置卡片 */
+/* 重置卡片 - 与登录页统一为左右双栏玻璃卡片 */
 .reset-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 26px;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(24px);
+  border-radius: 28px;
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   overflow: hidden;
   animation: cardAppear 0.9s ease-out;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: stretch;
 }
 
 .reset-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 44px 88px rgba(0, 0, 0, 0.14), 0 22px 44px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: none;
 }
 
 @keyframes cardAppear {
@@ -327,26 +325,34 @@ const handleSubmit = async () => {
   }
 }
 
-/* 重置头部 */
+/* 重置头部 - 复用登录页左侧风格 */
 .reset-header {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 56px 48px 48px;
   text-align: center;
-  padding: 40px 34px 32px;
-  background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
-  border-bottom: 1px solid rgba(251, 146, 60, 0.12);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.7), transparent 55%),
+    linear-gradient(135deg, rgba(110, 231, 183, 0.2) 0%, rgba(249, 168, 212, 0.4) 100%);
+  border-right: 1px solid rgba(249, 168, 212, 0.3);
 }
 
 .logo-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 13px;
-  margin-bottom: 26px;
+  gap: 12px;
+  margin-bottom: 32px;
 }
 
 .brand-title {
-  font-size: 29px;
+  font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, #fb923c 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #6ee7b7 0%, #f9a8d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -355,24 +361,29 @@ const handleSubmit = async () => {
 }
 
 .page-title {
-  font-size: 33px;
+  font-size: 30px;
   font-weight: 800;
-  color: #1a1a1a;
-  margin: 0 0 9px 0;
+  color: #1f2933;
+  margin: 0 0 8px 0;
   letter-spacing: -0.02em;
 }
 
 .page-subtitle {
-  font-size: 16.5px;
+  font-size: 16px;
   color: #6b7280;
   margin: 0;
   line-height: 1.5;
   font-weight: 400;
 }
 
-/* 重置表单 */
+/* 重置表单 - 右侧区域，偏绿色背景 */
 .reset-form {
-  padding: 34px;
+  flex: 1;
+  padding: 40px 40px 32px;
+  background: linear-gradient(135deg,
+    rgba(209, 250, 229, 0.96) 0%,
+    rgba(240, 253, 250, 0.98) 40%,
+    rgba(240, 249, 255, 0.98) 100%);
 }
 
 /* 表单项样式覆盖 */
@@ -381,32 +392,32 @@ const handleSubmit = async () => {
 }
 
 :deep(.ant-input) {
-  border-radius: 13px;
-  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-full);
+  border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
-  padding: 0 17px;
+  padding: 0 20px;
   font-size: 16px;
-  height: 52px;
+  height: 48px;
   display: flex;
   align-items: center;
 }
 
 :deep(.ant-input:focus),
 :deep(.ant-input-focused) {
-  border-color: #fb923c;
-  box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.13);
+  border-color: #6ee7b7;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35);
 }
 
 :deep(.ant-input-password) {
-  border-radius: 13px;
+  border-radius: var(--radius-full);
 }
 
 :deep(.ant-input-affix-wrapper) {
-  border-radius: 13px !important;
-  border: 2px solid #e5e7eb !important;
+  border-radius: var(--radius-full) !important;
+  border: 1px solid #e5e7eb !important;
   transition: all 0.3s ease;
-  padding: 0 17px !important;
-  height: 52px !important;
+  padding: 0 20px !important;
+  height: 48px !important;
   display: flex;
   align-items: center;
   font-size: 16px;
@@ -429,8 +440,8 @@ const handleSubmit = async () => {
 
 :deep(.ant-input-affix-wrapper:focus),
 :deep(.ant-input-affix-wrapper-focused) {
-  border-color: #fb923c !important;
-  box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.13) !important;
+  border-color: #6ee7b7 !important;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35) !important;
 }
 
 /* 覆盖错误状态样式 */
@@ -440,38 +451,40 @@ const handleSubmit = async () => {
 
 :deep(.ant-form-item-has-error .ant-input-affix-wrapper:focus),
 :deep(.ant-form-item-has-error .ant-input-affix-wrapper-focused) {
-  border-color: #fb923c !important;
-  box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.13) !important;
+  border-color: #6ee7b7 !important;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35) !important;
 }
 
 .send-code-btn {
   width: 120px;
-  height: 52px;
+  height: 48px !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 13px;
-  border: 1px solid rgba(251, 146, 60, 0.28);
-  background: linear-gradient(135deg, rgba(251, 146, 60, 0.16) 0%, rgba(239, 68, 68, 0.16) 100%);
-  color: rgba(234, 88, 12, 0.75);
+  border-radius: 999px !important;
+  border: 1px solid rgba(110, 231, 183, 0.6) !important;
+  background: linear-gradient(120deg, #ecfeff 0%, #d1fae5 40%, #fef3f7 100%);
+  color: #047857 !important;
   font-weight: 600;
   letter-spacing: 0.5px;
+  padding: 0 20px !important;
   transition: all 0.3s ease;
-  box-shadow: 0 12px 24px rgba(251, 146, 60, 0.1);
+  box-shadow: 0 8px 20px rgba(110, 231, 183, 0.25);
   backdrop-filter: blur(6px);
+  box-sizing: border-box;
+  line-height: 48px !important;
 }
 
 .send-code-btn:hover,
 .send-code-btn:focus {
-  border-color: rgba(251, 146, 60, 0.45);
-  background: linear-gradient(135deg, rgba(251, 146, 60, 0.22) 0%, rgba(239, 68, 68, 0.22) 100%);
-  color: rgba(194, 65, 12, 0.88);
-  box-shadow: 0 16px 32px rgba(251, 146, 60, 0.16);
+	border-color: #ef4444 !important;
+	box-shadow: 0 12px 28px rgba(110, 231, 183, 0.4);
 }
 
 .send-code-btn:active {
   transform: translateY(1px);
-  box-shadow: 0 8px 18px rgba(251, 146, 60, 0.14);
+  border-color: #ef4444 !important;
+  box-shadow: 0 6px 16px rgba(110, 231, 183, 0.3);
 }
 
 .send-code-btn[disabled] {
@@ -489,20 +502,22 @@ const handleSubmit = async () => {
 }
 
 .reset-btn {
-  width: 100%;
-  height: 58px;
-  border-radius: 17px;
-  background: linear-gradient(135deg, #fb923c 0%, #ef4444 100%);
-  border: none;
-  font-size: 18.5px;
+  width: auto !important;
+  min-width: 200px;
+  height: 48px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #6ee7b7 0%, #f9a8d4 100%) !important;
+  border: none !important;
+  font-size: 16px !important;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 8px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .reset-btn::before {
@@ -512,7 +527,7 @@ const handleSubmit = async () => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.23) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
   transition: left 0.55s ease;
 }
 
@@ -521,12 +536,12 @@ const handleSubmit = async () => {
 }
 
 .reset-btn:hover {
-  transform: translateY(-2.5px);
-  box-shadow: 0 18px 36px rgba(251, 146, 60, 0.38);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(249, 168, 212, 0.45);
 }
 
 .reset-btn:active {
-  transform: translateY(-0.5px);
+  transform: translateY(-1px);
 }
 
 .btn-text {
@@ -590,64 +605,68 @@ const handleSubmit = async () => {
 @media (max-width: 768px) {
   .reset-container {
     padding: 16px;
-    max-width: 370px;
+    max-width: 100%;
   }
 
   .reset-card {
     border-radius: 22px;
+    flex-direction: column;
   }
 
   .reset-header {
-    padding: 34px 26px 26px;
+    padding: 32px 20px 24px;
+    text-align: center;
+    border-right: none;
+    border-bottom: 1px solid rgba(249, 168, 212, 0.3);
   }
 
   .brand-title {
-    font-size: 25px;
+    font-size: 26px;
   }
 
   .page-title {
-    font-size: 29px;
+    font-size: 28px;
   }
 
   .page-subtitle {
-    font-size: 14.5px;
+    font-size: 14px;
   }
 
   .reset-form {
-    padding: 26px;
+    padding: 24px 20px 24px;
   }
 
   .reset-btn {
-    height: 54px;
-    font-size: 16.5px;
+    height: 46px;
+    font-size: 15px;
   }
 }
 
 /* 暗色模式适配 */
 @media (prefers-color-scheme: dark) {
   .reset-card {
-    background: rgba(17, 17, 17, 0.95);
-    color: white;
+    background: rgba(255, 255, 255, 0.96);
+    color: #111827;
   }
 
   .page-title {
-    color: white;
+    color: #111827;
   }
 
   .page-subtitle {
-    color: #d1d5db;
+    color: #4b5563;
   }
 
   .login-link {
-    color: #9ca3af;
+    color: #6b7280;
   }
 
   .reset-header {
-    border-bottom: 1px solid rgba(251, 146, 60, 0.18);
+    border-bottom: 1px solid rgba(249, 168, 212, 0.3);
   }
 
   .reset-footer {
-    border-top: 1px solid #374151;
+    border-top: 1px solid #e5e7eb;
   }
 }
 </style>

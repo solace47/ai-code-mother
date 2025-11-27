@@ -121,50 +121,59 @@
 
         <!-- 用户消息输入框 -->
         <div class="input-container">
-          <div class="input-wrapper">
-            <a-tooltip v-if="!isOwner" title="无法在别人的作品下对话哦~" placement="top">
+          <div class="message-input-card">
+            <div class="message-textarea-wrapper">
+              <a-tooltip v-if="!isOwner" title="无法在别人的作品下对话哦~" placement="top">
+                <a-textarea
+                  class="message-textarea"
+                  v-model:value="userInput"
+                  :placeholder="getInputPlaceholder()"
+                  :rows="4"
+                  :maxlength="1000"
+                  @keydown="onInputKeydown"
+                  :disabled="isGenerating || !isOwner"
+                />
+              </a-tooltip>
               <a-textarea
+                v-else
+                class="message-textarea"
                 v-model:value="userInput"
                 :placeholder="getInputPlaceholder()"
                 :rows="4"
                 :maxlength="1000"
                 @keydown="onInputKeydown"
-                :disabled="isGenerating || !isOwner"
+                :disabled="isGenerating"
               />
-            </a-tooltip>
-            <a-textarea
-              v-else
-              v-model:value="userInput"
-              :placeholder="getInputPlaceholder()"
-              :rows="4"
-              :maxlength="1000"
-              @keydown="onInputKeydown"
-              :disabled="isGenerating"
-            />
-            <!-- 合一主按钮：发送 / 停止 / 继续（非作者可见但禁用） -->
-            <a-tooltip v-if="!isOwner" title="无法在别人的作品下对话哦~" placement="top">
-              <button
-                class="stream-toggle"
-                :title="primaryActionTitle"
-                :disabled="true"
-                @click="onPrimaryActionClick"
-              >
-                <span v-if="btnState === 'stop'">■</span>
-                <span v-else-if="btnState === 'continue'">▶</span>
-                <SendOutlined v-else :style="{ opacity: 0.5 }" />
-              </button>
-            </a-tooltip>
-            <button
-              v-else
-              class="stream-toggle"
-              :title="primaryActionTitle"
-              :disabled="primaryActionDisabled"
-              @click="onPrimaryActionClick"
-            >
-              <span v-if="btnState === 'stop'">■</span>
-              <span v-else-if="btnState === 'continue'">▶</span>
-              <SendOutlined v-else :style="{ opacity: btnState === 'disabled' ? 0.5 : 1 }" />
-            </button>
+              <div class="message-send-wrapper">
+                <a-tooltip v-if="!isOwner" title="无法在别人的作品下对话哦~" placement="left">
+                  <button
+                    type="button"
+                    class="message-send-btn"
+                    :class="`state-${btnState}`"
+                    :title="primaryActionTitle"
+                    :disabled="true"
+                    @click="onPrimaryActionClick"
+                  >
+                    <span v-if="btnState === 'stop'" class="message-send-icon">■</span>
+                    <span v-else-if="btnState === 'continue'" class="message-send-icon">▶</span>
+                    <ArrowUpOutlined v-else class="message-send-icon" />
+                  </button>
+                </a-tooltip>
+                <button
+                  v-else
+                  type="button"
+                  class="message-send-btn"
+                  :class="`state-${btnState}`"
+                  :title="primaryActionTitle"
+                  :disabled="primaryActionDisabled"
+                  @click="onPrimaryActionClick"
+                >
+                  <span v-if="btnState === 'stop'" class="message-send-icon">■</span>
+                  <span v-else-if="btnState === 'continue'" class="message-send-icon">▶</span>
+                  <ArrowUpOutlined v-else class="message-send-icon" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -529,7 +538,7 @@ import { VisualEditor, type ElementInfo } from '@/utils/visualEditor'
 
 import {
   CloudUploadOutlined,
-  SendOutlined,
+  ArrowUpOutlined,
   ExportOutlined,
   InfoCircleOutlined,
   DownloadOutlined,
@@ -2988,45 +2997,131 @@ watch(
 
 /* 输入区域 */
 .input-container {
-  padding: 16px;
-  background: white;
+  padding: 24px 0 16px;
 }
 
-.input-wrapper {
+.message-input-card {
   position: relative;
+  border-radius: 24px;
+  padding: 0;
+  background: linear-gradient(135deg, rgba(233, 247, 255, 0.95) 0%, #fff 50%, rgba(232, 248, 255, 0.9) 100%);
+  border: 1px solid rgba(220, 235, 245, 0.8);
+  box-shadow: 0 8px 32px rgba(68, 184, 193, 0.15);
+  overflow: visible;
 }
 
-.input-wrapper .ant-input {
-  padding-right: 50px;
-}
-
-.input-actions {
+/* 右上角两条斜线装饰 */
+.message-input-card::before,
+.message-input-card::after {
+  content: '';
   position: absolute;
-  bottom: 8px;
-  right: 8px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(180, 195, 210, 0.7);
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 
-/* 蓝色浮动的流控制按钮 */
-.stream-toggle {
+/* 长斜线 */
+.message-input-card::before {
+  width: 28px;
+  top: 20px;
+  right: 28px;
+}
+
+/* 短斜线 */
+.message-input-card::after {
+  width: 16px;
+  top: 14px;
+  right: 24px;
+}
+
+.message-textarea-wrapper {
+  position: relative;
+  min-height: 120px;
+  padding: 0;
+}
+
+.message-textarea-wrapper :deep(.ant-input-disabled) {
+  cursor: not-allowed;
+  opacity: 0.7;
+  background: transparent !important;
+}
+
+textarea.message-textarea {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent;
+  resize: none;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #4a5568;
+  padding: 20px 80px 60px 24px;
+  min-height: 120px;
+  caret-color: #333;
+}
+
+textarea.message-textarea::placeholder {
+  color: #9ca3af;
+}
+
+textarea.message-textarea:focus-visible {
+  outline: none;
+}
+
+.message-send-wrapper {
   position: absolute;
-  right: 8px; /* 合一按钮靠右显示 */
-  bottom: 8px;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  right: 16px;
+  bottom: 16px;
+}
+
+.message-send-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   border: none;
-  background: #1677ff;
+  background: #1a1a1a;
   color: #fff;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-.stream-toggle[disabled] {
-  opacity: 0.5;
+
+.message-send-btn:disabled {
   cursor: not-allowed;
+  box-shadow: none;
+}
+
+.message-send-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.message-send-btn.state-disabled {
+  background: #d1d5db;
+}
+
+.message-send-btn.state-stop {
+  background: #ff7875;
+}
+
+.message-send-btn.state-continue {
+  background: #1a1a1a;
+}
+
+.message-send-btn.state-send {
+  background: #1a1a1a;
+}
+
+.message-send-icon {
+  font-size: 18px;
+  line-height: 1;
 }
 
 /* 右侧代码生成区域 */

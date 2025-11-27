@@ -1,12 +1,12 @@
 <template>
-  <a-layout-header class="header">
-    <div class="header-content">
+  <a-layout-header class="header" :class="{ 'header-scrolled': isScrolled }">
+    <div class="header-content" :class="{ 'header-content-scrolled': isScrolled }">
       <!-- 左侧：Logo和标题 -->
       <div class="header-left">
         <RouterLink to="/">
           <div class="logo-section">
-            <img class="logo" src="@/assets/logo.png" alt="Logo" />
-            <h1 class="site-title">AI Code Mother</h1>
+            <img class="logo" src="@/assets/logo.svg" alt="NoCode Logo" />
+            <h1 class="site-title">NoCode</h1>
           </div>
         </RouterLink>
       </div>
@@ -63,7 +63,7 @@
             </a-dropdown>
           </div>
           <div v-else>
-            <a-button type="primary" href="/user/login">登录</a-button>
+            <a-button class="login-btn" href="/user/login">登录</a-button>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, ref } from 'vue'
+import { computed, h, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { type MenuProps, message } from 'ant-design-vue'
 import { useLoginUserStore } from '@/stores/loginUser.ts'
@@ -82,6 +82,28 @@ import PointsDisplay from './PointsDisplay.vue'
 
 const loginUserStore = useLoginUserStore()
 const router = useRouter()
+
+// 滚动状态
+const isScrolled = ref(false)
+
+const handleScroll = () => {
+  const scrollTop =
+    document.body.scrollTop ||
+    document.documentElement.scrollTop ||
+    window.scrollY ||
+    0
+  isScrolled.value = scrollTop > 0
+}
+
+onMounted(() => {
+  document.body.addEventListener('scroll', handleScroll)
+  handleScroll()
+})
+
+onUnmounted(() => {
+  document.body.removeEventListener('scroll', handleScroll)
+})
+
 // 当前选中菜单
 const selectedKeys = ref<string[]>(['/'])
 // 监听路由变化，更新当前选中菜单
@@ -206,21 +228,18 @@ const doLogout = async () => {
 
 <style scoped>
 .header {
-  background: var(--glass-gradient);
-  backdrop-filter: var(--glass-backdrop);
-  border: var(--glass-border);
-  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  margin: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+  background: transparent !important;
   padding: 0 var(--spacing-xl);
-  transition: var(--transition-normal);
-  position: sticky;
+  transition: all 0.3s ease;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
 }
 
-.header:hover {
-  box-shadow: var(--shadow-xl);
+.header.header-scrolled {
+  background: transparent !important;
 }
 
 .header-content {
@@ -228,7 +247,18 @@ const doLogout = async () => {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 64px;
+  max-width: 1120px;
+  margin: var(--spacing-sm) auto;
+  padding: 0 var(--spacing-lg);
+  height: 56px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.header-content-scrolled {
 }
 
 .header-left {
@@ -258,7 +288,7 @@ const doLogout = async () => {
   margin: 0;
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  background: var(--button-gradient-primary);
+  background: linear-gradient(120deg, #6ee7b7 0%, #f9a8d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -313,46 +343,30 @@ const doLogout = async () => {
   overflow: hidden;
 }
 
-.menu-item::before {
+.menu-item::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 56, 255, 0.1) 0%, rgba(0, 209, 255, 0.1) 100%);
+  left: 18px;
+  right: 18px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #6ee7b7 0%, #f9a8d4 100%);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
   opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
-.menu-item:hover::before {
+.menu-item:hover::after,
+.menu-item-selected::after {
+  transform: scaleX(1);
   opacity: 1;
 }
 
-.menu-item:hover {
-  background: transparent;
-  color: var(--primary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 56, 255, 0.15);
-}
-
 .menu-item-selected {
-  background: linear-gradient(135deg, rgba(0, 56, 255, 0.15) 0%, rgba(0, 209, 255, 0.15) 100%);
-  color: var(--primary-color);
-  box-shadow: 0 2px 8px rgba(0, 56, 255, 0.2);
+  color: var(--gray-900);
   font-weight: 600;
-}
-
-.menu-item-selected::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 3px;
-  background: var(--button-gradient-primary);
-  border-radius: 2px;
 }
 
 .menu-icon {
@@ -401,24 +415,49 @@ const doLogout = async () => {
   box-shadow: var(--shadow-md);
 }
 
-/* 登录按钮样式 - 蓝色渐变 */
 :deep(.ant-btn-primary) {
-  background: var(--button-gradient-primary);
+  background: var(--gray-900);
   border: none;
-  border-radius: var(--radius-full);
-  height: 44px;
-  padding: 0 28px;
-  font-size: 15px;
-  font-weight: 600;
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  height: 40px;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: none;
   transition: var(--transition-normal);
 }
 
 :deep(.ant-btn-primary:hover) {
-  background: var(--button-gradient-secondary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  background: var(--gray-800);
+  transform: none;
+  box-shadow: none;
 }
+
+/* 登录按钮自定义样式 */
+.login-btn {
+  background: var(--gray-900);
+  color: var(--white);
+  border: 1px solid var(--gray-900);
+  border-radius: 4px;
+  height: 36px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--transition-normal);
+}
+
+.login-btn:hover {
+  background: linear-gradient(120deg, #6ee7b7 0%, #f9a8d4 100%);
+  border-color: #f9a8d4 !important;
+  color: var(--gray-900) !important;
+}
+
+.login-btn:focus,
+.login-btn:focus-visible {
+  outline: 2px solid #f9a8d4;
+  outline-offset: 2px;
+}
+
 
 /* 响应式设计 */
 @media (max-width: 768px) {

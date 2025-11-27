@@ -15,7 +15,7 @@
 
       <a-alert
         message="💡 核心特性"
-        description="AI Code Mother 支持直接在浏览器中修改已生成的网站,无需任何代码编辑器"
+        description="NoCode 支持直接在浏览器中修改已生成的网站,无需任何代码编辑器"
         type="info"
         show-icon
         style="margin-bottom: 24px;"

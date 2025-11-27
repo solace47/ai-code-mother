@@ -109,13 +109,15 @@ const handleSubmit = async (values: any) => {
 
 <style scoped>
 #userLoginPage {
-  min-height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	min-height: calc(100vh - 64px);
+	padding-top: 64px;
+	box-sizing: border-box;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /* 动态背景 */
@@ -130,13 +132,7 @@ const handleSubmit = async (values: any) => {
 
 /* 浮动装饰元素 */
 .bg-shapes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
+  display: none;
 }
 
 .shape {
@@ -190,25 +186,27 @@ const handleSubmit = async (values: any) => {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 420px;
-  padding: 20px;
+  max-width: 920px;
+  padding: 24px;
 }
 
 /* 登录卡片 */
 .login-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(24px);
+  border-radius: 28px;
+	box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   overflow: hidden;
   animation: cardAppear 0.8s ease-out;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: stretch;
 }
 
 .login-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15), 0 20px 40px rgba(0, 0, 0, 0.1);
+	box-shadow: none;
 }
 
 @keyframes cardAppear {
@@ -224,18 +222,26 @@ const handleSubmit = async (values: any) => {
 
 /* 登录头部 */
 .login-header {
-  text-align: center;
-  padding: 40px 32px 32px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+	flex: 1.1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+	padding: 56px 48px 48px;
+	text-align: center;
+	background:
+	  radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.7), transparent 55%),
+	  linear-gradient(135deg, rgba(110, 231, 183, 0.2) 0%, rgba(249, 168, 212, 0.4) 100%);
+	border-right: 1px solid rgba(249, 168, 212, 0.3);
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  justify-content: center;
+	justify-content: center;
   gap: 12px;
-  margin-bottom: 24px;
+	margin-bottom: 32px;
 }
 
 .logo-icon {
@@ -250,12 +256,12 @@ const handleSubmit = async (values: any) => {
 }
 
 .brand-title {
-  font-size: 28px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+	font-size: 34px;
+	font-weight: 700;
+	background: linear-gradient(135deg, #6ee7b7 0%, #f9a8d4 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
   margin: 0;
   letter-spacing: -0.02em;
 }
@@ -277,7 +283,9 @@ const handleSubmit = async (values: any) => {
 
 /* 登录表单 */
 .login-form {
-  padding: 32px;
+	flex: 1;
+	padding: 40px 40px 32px;
+	background: linear-gradient(135deg, rgba(209, 250, 229, 0.96) 0%, rgba(240, 253, 250, 0.98) 40%, rgba(240, 249, 255, 0.98) 100%);
 }
 
 /* 表单项样式覆盖 */
@@ -286,56 +294,50 @@ const handleSubmit = async (values: any) => {
 }
 
 :deep(.ant-input) {
-  border-radius: 12px;
-  border: 2px solid #e5e7eb;
-  transition: all 0.3s ease;
-  padding: 0 16px;
-  font-size: 16px;
-  height: 52px;
-  display: flex;
-  align-items: center;
+	border-radius: var(--radius-full);
+	border: 1px solid #e5e7eb;
+	transition: all 0.3s ease;
+	padding: 0 20px;
+	font-size: 16px;
+	height: 48px;
+	display: flex;
+	align-items: center;
 }
 
 :deep(.ant-input:focus),
 :deep(.ant-input-focused) {
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+	border-color: #6ee7b7;
+	box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35);
 }
 
 :deep(.ant-input-password) {
-  border-radius: 12px;
+	border-radius: var(--radius-full);
 }
 
 :deep(.ant-input-affix-wrapper) {
-  border-radius: 12px !important;
-  border: 2px solid #e5e7eb !important;
-  transition: all 0.3s ease;
-  padding: 0 16px !important;
-  height: 52px !important;
-  display: flex;
+	border-radius: var(--radius-full) !important;
+	border: 1px solid #e5e7eb !important;
+	transition: all 0.3s ease;
+	padding: 0 20px !important;
+	height: 48px !important;
+	display: flex;
   align-items: center;
   font-size: 16px;
 }
 
 :deep(.ant-input-affix-wrapper .ant-input) {
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  height: auto !important;
-  background: transparent;
-  font-size: 16px !important;
-}
-
-:deep(.ant-input-affix-wrapper .ant-input:focus),
-:deep(.ant-input-affix-wrapper .ant-input-focused) {
-  border: none !important;
-  box-shadow: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	height: auto !important;
+	background: transparent;
+	font-size: 16px !important;
 }
 
 :deep(.ant-input-affix-wrapper:focus),
 :deep(.ant-input-affix-wrapper-focused) {
-  border-color: #667eea !important;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+	border-color: #6ee7b7 !important;
+	box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35) !important;
 }
 
 /* 覆盖错误状态样式 */
@@ -345,8 +347,8 @@ const handleSubmit = async (values: any) => {
 
 :deep(.ant-form-item-has-error .ant-input-affix-wrapper:focus),
 :deep(.ant-form-item-has-error .ant-input-affix-wrapper-focused) {
-  border-color: #667eea !important;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1) !important;
+	border-color: #6ee7b7 !important;
+	box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35) !important;
 }
 
 /* 表单选项 */
@@ -357,7 +359,7 @@ const handleSubmit = async (values: any) => {
 }
 
 .forgot-password {
-  color: #667eea;
+	color: #ef4444;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -372,18 +374,17 @@ const handleSubmit = async (values: any) => {
   height: 1.5px;
   bottom: -2px;
   left: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	background: linear-gradient(135deg, #fecaca 0%, #ef4444 100%);
   transition: width 0.3s ease;
 }
 
 .forgot-password:hover {
-  color: #764ba2;
+	color: #b91c1c;
 }
 
 .forgot-password:hover::after {
   width: 100%;
 }
-
 
 /* 提交按钮 */
 .submit-item {
@@ -392,20 +393,22 @@ const handleSubmit = async (values: any) => {
 }
 
 .login-btn {
-  width: 100%;
-  height: 56px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  font-size: 18px;
+	width: auto !important;
+	min-width: 180px;
+	height: 44px !important;
+	border-radius: 999px !important;
+	background: linear-gradient(90deg, #6ee7b7 0%, #f9a8d4 100%) !important;
+	border: none !important;
+	font-size: 16px !important;
   font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .login-btn::before {
@@ -425,7 +428,7 @@ const handleSubmit = async (values: any) => {
 
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(102, 126, 234, 0.4);
+	box-shadow: 0 16px 32px rgba(249, 168, 212, 0.45);
 }
 
 .login-btn:active {
@@ -462,7 +465,7 @@ const handleSubmit = async (values: any) => {
 }
 
 .register-link .link {
-  color: #667eea;
+	color: #6ee7b7;
   text-decoration: none;
   font-weight: 600;
   margin-left: 8px;
@@ -477,7 +480,7 @@ const handleSubmit = async (values: any) => {
   height: 2px;
   bottom: -2px;
   left: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6ee7b7 0%, #f9a8d4 100%);
   transition: width 0.3s ease;
 }
 
@@ -486,22 +489,30 @@ const handleSubmit = async (values: any) => {
 }
 
 .register-link .link:hover {
-  color: #764ba2;
+	color: #f9a8d4;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .login-container {
     padding: 16px;
-    max-width: 360px;
+    max-width: 100%;
   }
 
   .login-card {
     border-radius: 20px;
+    flex-direction: column;
   }
 
   .login-header {
-    padding: 32px 24px 24px;
+    padding: 28px 20px 20px;
+    text-align: center;
+    border-right: none;
+    border-bottom: 1px solid rgba(249, 168, 212, 0.3);
+  }
+
+  .logo-section {
+    justify-content: center;
   }
 
   .brand-title {
@@ -517,7 +528,7 @@ const handleSubmit = async (values: any) => {
   }
 
   .login-form {
-    padding: 24px;
+    padding: 24px 20px 24px;
   }
 
   .login-btn {
@@ -528,22 +539,22 @@ const handleSubmit = async (values: any) => {
 
 /* 暗色模式适配 */
 @media (prefers-color-scheme: dark) {
-  .login-card {
-    background: rgba(17, 17, 17, 0.95);
-    color: white;
-  }
+	.login-card {
+		background: rgba(255, 255, 255, 0.96);
+		color: #111827;
+	}
 
-  .page-title {
-    color: white;
-  }
+	.page-title {
+		color: #111827;
+	}
 
-  .page-subtitle {
-    color: #d1d5db;
-  }
+	.page-subtitle {
+		color: #4b5563;
+	}
 
 
-  .register-link {
-    color: #9ca3af;
-  }
+  	.register-link {
+		color: #6b7280;
+	}
 }
 </style>

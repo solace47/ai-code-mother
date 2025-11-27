@@ -63,7 +63,7 @@
 
       <a-collapse :bordered="false">
         <a-collapse-panel key="1" header="积分系统是什么?">
-          <p>AI Code Mother 使用积分系统来管理代码生成次数：</p>
+          <p>NoCode 使用积分系统来管理代码生成次数：</p>
           <ul>
             <li>不同类型的应用消耗不同积分</li>
             <li>积分不足时无法生成代码</li>
@@ -244,7 +244,7 @@
 
       <a-collapse :bordered="false">
         <a-collapse-panel key="1" header="平台完全免费吗?">
-          <p>AI Code Mother 是一个开源项目，代码完全开放：</p>
+          <p>NoCode 是一个开源项目，代码完全开放：</p>
           <ul>
             <li>GitHub仓库：<a href="https://github.com/solace47/ai-code-mother" target="_blank">solace47/ai-code-mother</a></li>
             <li>可以自行部署使用</li>

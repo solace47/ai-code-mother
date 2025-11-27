@@ -238,7 +238,9 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 
 <style scoped>
 #userRegisterPage {
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
+  padding-top: 64px;
+  box-sizing: border-box;
   position: relative;
   display: flex;
   align-items: center;
@@ -259,13 +261,7 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 
 /* 浮动装饰元素 */
 .bg-shapes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
+  display: none;
 }
 
 .shape {
@@ -328,25 +324,27 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 450px;
-  padding: 20px;
+  max-width: 920px;
+  padding: 24px;
 }
 
 /* 注册卡片 */
 .register-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(24px);
   border-radius: 28px;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   overflow: hidden;
   animation: cardAppear 1s ease-out;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: stretch;
 }
 
 .register-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 48px 96px rgba(0, 0, 0, 0.15), 0 24px 48px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: none;
 }
 
 @keyframes cardAppear {
@@ -360,20 +358,28 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
   }
 }
 
-/* 注册头部 */
+/* 注册头部 - 与登录/重置页左侧一致 */
 .register-header {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 56px 48px 48px;
   text-align: center;
-  padding: 42px 36px 36px;
-  background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
-  border-bottom: 1px solid rgba(240, 147, 251, 0.15);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.7), transparent 55%),
+    linear-gradient(135deg, rgba(110, 231, 183, 0.2) 0%, rgba(249, 168, 212, 0.4) 100%);
+  border-right: 1px solid rgba(249, 168, 212, 0.3);
 }
 
 .logo-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  margin-bottom: 28px;
+  gap: 12px;
+  margin-bottom: 32px;
 }
 
 .logo-icon {
@@ -402,9 +408,9 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 }
 
 .brand-title {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+  background: linear-gradient(135deg, #6ee7b7 0%, #f9a8d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -413,58 +419,63 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 }
 
 .page-title {
-  font-size: 34px;
+  font-size: 30px;
   font-weight: 800;
-  color: #1a1a1a;
-  margin: 0 0 10px 0;
+  color: #1f2933;
+  margin: 0 0 8px 0;
   letter-spacing: -0.02em;
 }
 
 .page-subtitle {
-  font-size: 17px;
+  font-size: 16px;
   color: #6b7280;
   margin: 0;
   line-height: 1.5;
   font-weight: 400;
 }
 
-/* 注册表单 */
+/* 注册表单 - 右侧区域 */
 .register-form {
-  padding: 36px;
+  flex: 1;
+  padding: 40px 40px 32px;
+  background: linear-gradient(135deg,
+    rgba(209, 250, 229, 0.96) 0%,
+    rgba(240, 253, 250, 0.98) 40%,
+    rgba(240, 249, 255, 0.98) 100%);
 }
 
 /* 表单项样式覆盖 */
 :deep(.ant-form-item) {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 :deep(.ant-input) {
-  border-radius: 14px;
-  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-full);
+  border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
-  padding: 0 18px;
+  padding: 0 20px;
   font-size: 16px;
-  height: 52px;
+  height: 48px;
   display: flex;
   align-items: center;
 }
 
 :deep(.ant-input:focus),
 :deep(.ant-input-focused) {
-  border-color: #f093fb;
-  box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.15);
+  border-color: #6ee7b7;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35);
 }
 
 :deep(.ant-input-password) {
-  border-radius: 14px;
+  border-radius: var(--radius-full);
 }
 
 :deep(.ant-input-affix-wrapper) {
-  border-radius: 14px !important;
-  border: 2px solid #e5e7eb !important;
+  border-radius: var(--radius-full) !important;
+  border: 1px solid #e5e7eb !important;
   transition: all 0.3s ease;
-  padding: 0 18px !important;
-  height: 52px !important;
+  padding: 0 20px !important;
+  height: 48px !important;
   display: flex;
   align-items: center;
   font-size: 16px;
@@ -487,8 +498,8 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 
 :deep(.ant-input-affix-wrapper:focus),
 :deep(.ant-input-affix-wrapper-focused) {
-  border-color: #f093fb !important;
-  box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.15) !important;
+  border-color: #6ee7b7 !important;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35) !important;
 }
 
 /* 覆盖错误状态样式 */
@@ -498,38 +509,40 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 
 :deep(.ant-form-item-has-error .ant-input-affix-wrapper:focus),
 :deep(.ant-form-item-has-error .ant-input-affix-wrapper-focused) {
-  border-color: #f093fb !important;
-  box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.15) !important;
+  border-color: #6ee7b7 !important;
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.35) !important;
 }
 
 .send-code-btn {
   width: 120px;
-  height: 52px;
+  height: 48px !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  background: linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(79, 172, 254, 0.15) 100%);
-  color: rgba(76, 81, 191, 0.7);
+  border-radius: 999px !important;
+  border: 1px solid rgba(110, 231, 183, 0.6) !important;
+  background: linear-gradient(120deg, #ecfeff 0%, #d1fae5 40%, #fef3f7 100%);
+  color: #047857 !important;
   font-weight: 600;
   letter-spacing: 0.5px;
+  padding: 0 20px !important;
   transition: all 0.3s ease;
-  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.08);
+  box-shadow: 0 8px 20px rgba(110, 231, 183, 0.25);
   backdrop-filter: blur(6px);
+  box-sizing: border-box;
+  line-height: 48px !important;
 }
 
 .send-code-btn:hover,
 .send-code-btn:focus {
-  border-color: rgba(99, 102, 241, 0.4);
-  background: linear-gradient(135deg, rgba(240, 147, 251, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);
-  color: rgba(59, 66, 165, 0.85);
-  box-shadow: 0 16px 32px rgba(99, 102, 241, 0.14);
+	border-color: #ef4444 !important;
+	box-shadow: 0 12px 28px rgba(110, 231, 183, 0.4);
 }
 
 .send-code-btn:active {
   transform: translateY(1px);
-  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.12);
+  border-color: #ef4444 !important;
+  box-shadow: 0 6px 16px rgba(110, 231, 183, 0.3);
 }
 
 .send-code-btn[disabled] {
@@ -548,20 +561,22 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 }
 
 .register-btn {
-  width: 100%;
-  height: 60px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
-  border: none;
-  font-size: 19px;
+  width: auto !important;
+  min-width: 200px;
+  height: 48px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #6ee7b7 0%, #f9a8d4 100%) !important;
+  border: none !important;
+  font-size: 16px !important;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .register-btn::before {
@@ -571,7 +586,7 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
   transition: left 0.6s ease;
 }
 
@@ -580,8 +595,8 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 }
 
 .register-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px rgba(240, 147, 251, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(249, 168, 212, 0.45);
 }
 
 .register-btn:active {
@@ -619,7 +634,7 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 }
 
 .login-link .link {
-  color: #f093fb;
+  color: #6ee7b7;
   text-decoration: none;
   font-weight: 600;
   margin-left: 8px;
@@ -634,7 +649,7 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
   height: 2px;
   bottom: -2px;
   left: 0;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #6ee7b7 0%, #f9a8d4 100%);
   transition: width 0.3s ease;
 }
 
@@ -643,22 +658,26 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 }
 
 .login-link .link:hover {
-  color: #f5576c;
+  color: #f9a8d4;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .register-container {
     padding: 16px;
-    max-width: 380px;
+    max-width: 100%;
   }
 
   .register-card {
     border-radius: 24px;
+    flex-direction: column;
   }
 
   .register-header {
-    padding: 36px 28px 28px;
+    padding: 32px 20px 24px;
+    text-align: center;
+    border-right: none;
+    border-bottom: 1px solid rgba(249, 168, 212, 0.3);
   }
 
   .brand-title {
@@ -666,20 +685,20 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
   }
 
   .page-title {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .page-subtitle {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .register-form {
-    padding: 28px;
+    padding: 24px 20px 24px;
   }
 
   .register-btn {
-    height: 56px;
-    font-size: 17px;
+    height: 46px;
+    font-size: 15px;
   }
 
   .logo-icon {
@@ -690,29 +709,28 @@ const handleSubmit = async (values: API.UserRegisterRequest) => {
 /* 暗色模式适配 */
 @media (prefers-color-scheme: dark) {
   .register-card {
-    background: rgba(17, 17, 17, 0.95);
-    color: white;
+    background: rgba(255, 255, 255, 0.96);
+    color: #111827;
   }
 
   .page-title {
-    color: white;
+    color: #111827;
   }
 
   .page-subtitle {
-    color: #d1d5db;
+    color: #4b5563;
   }
 
-
   .login-link {
-    color: #9ca3af;
+    color: #6b7280;
   }
 
   .register-header {
-    border-bottom: 1px solid rgba(240, 147, 251, 0.2);
+    border-bottom: 1px solid rgba(249, 168, 212, 0.3);
   }
 
   .register-footer {
-    border-top: 1px solid #374151;
+    border-top: 1px solid #e5e7eb;
   }
 }
 </style>

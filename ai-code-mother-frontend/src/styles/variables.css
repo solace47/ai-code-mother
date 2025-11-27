@@ -58,6 +58,9 @@
     'Segoe UI', 'Roboto', sans-serif;
   --font-family-secondary: 'Open Sans', Arial, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+  /* 水墨风中文标题字体族 - 优先楷体 / 手写体 */
+  --font-family-ink: 'STKaiti', 'KaiTi', 'KaiTi_GB2312', 'FZKai-Z03', 'HanziPen SC',
+    'Songti SC', 'Noto Serif SC', serif;
 
   /* 字重层级 */
   --font-weight-light: 300;

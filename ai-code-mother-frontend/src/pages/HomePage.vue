@@ -255,118 +255,133 @@ onMounted(() => {
 
 <template>
   <div id="homePage">
-    <div class="container">
-      <!-- 网站标题和描述 -->
-      <div class="hero-section">
-        <h1 class="hero-title">Your Majestic AI Creation Concierge</h1>
-        <p class="hero-description">一句话轻松创建网站应用</p>
-      </div>
+    <!-- 区块1: 白色区域 - 标题和输入 -->
+    <div class="zone zone-white">
+      <div class="container">
+        <div class="hero-section">
+          <h1 class="hero-title">
+            一句话
+            <img class="hero-logo" src="@/assets/logo.svg" alt="NoCode Logo" />
+            呈所想
+          </h1>
+          <p class="hero-description">与 AI 对话轻松创建应用和网站</p>
+        </div>
 
-      <!-- 用户提示词输入框 -->
-      <div class="input-section">
-        <a-textarea
-          v-model:value="userPrompt"
-          placeholder="帮我创建个人博客网站"
-          :rows="4"
-          :maxlength="1000"
-          class="prompt-input"
-          @keydown="onPromptKeydown"
-        />
-        <div class="input-actions">
-          <a-button type="primary" size="large" @click="createApp" :loading="creating">
-            <template #icon>
-              <span>↑</span>
-            </template>
-          </a-button>
+        <div class="input-section">
+          <a-textarea
+            v-model:value="userPrompt"
+            placeholder="帮我创建个人博客网站"
+            :rows="4"
+            :maxlength="1000"
+            class="prompt-input"
+            @keydown="onPromptKeydown"
+          />
+          <button
+            type="button"
+            class="send-btn"
+            :class="{ 'is-disabled': !userPrompt.trim() || creating }"
+            :disabled="!userPrompt.trim() || creating"
+            @click="createApp"
+          >
+            <span v-if="creating" class="loading-icon">⏳</span>
+            <span v-else class="arrow-icon">↑</span>
+          </button>
+        </div>
+
+        <div class="quick-actions">
+          <a-button
+            type="default"
+            @click="
+              setPrompt(
+                '创建一个简洁优雅的个人介绍博客，使用原生多文件模式，包含响应式设计和基本交互功能。使用语义化HTML结构，和现代CSS Grid和Flexbox布局，添加平滑滚动和主题切换功能。',
+              )
+            "
+            >个人博客网站</a-button
+          >
+          <a-button
+            type="default"
+            @click="
+              setPrompt(
+                '设计一个专业的企业官网，包含公司介绍、产品服务展示、新闻资讯、联系我们等页面。采用商务风格的设计，包含轮播图、产品展示卡片、团队介绍、客户案例展示，支持多语言切换和在线客服功能。',
+              )
+            "
+            >企业官网网站</a-button
+          >
+          <a-button
+            type="default"
+            @click="
+              setPrompt(
+                '创建一个功能完整的待办事项列表单文件应用，包含添加任务、标记完成、删除任务和本地存储功能。',
+              )
+            "
+          >待办事项列表</a-button
+          >
+          <a-button
+            type="default"
+            @click="
+              setPrompt(
+                '制作一个精美的作品展示网站，适合设计师、摄影师、艺术家等创作者。包含作品画廊、项目详情页、个人简历、联系方式等模块。采用瀑布流或网格布局展示作品，支持图片放大预览和作品分类筛选。',
+              )
+            "
+            >作品展示网站</a-button
+          >
         </div>
       </div>
+    </div>
 
-      <!-- 快捷按钮 -->
-      <div class="quick-actions">
-        <a-button
-          type="default"
-          @click="
-            setPrompt(
-              '创建一个简洁优雅的个人介绍博客，使用原生多文件模式，包含响应式设计和基本交互功能。使用语义化HTML结构，和现代CSS Grid和Flexbox布局，添加平滑滚动和主题切换功能。',
-            )
-          "
-          >个人博客网站</a-button
-        >
-        <a-button
-          type="default"
-          @click="
-            setPrompt(
-              '设计一个专业的企业官网，包含公司介绍、产品服务展示、新闻资讯、联系我们等页面。采用商务风格的设计，包含轮播图、产品展示卡片、团队介绍、客户案例展示，支持多语言切换和在线客服功能。',
-            )
-          "
-          >企业官网网站</a-button
-        >
-        <a-button
-          type="default"
-          @click="
-            setPrompt(
-              '创建一个功能完整的待办事项列表单文件应用，包含添加任务、标记完成、删除任务和本地存储功能。',
-            )
-          "
-        >待办事项列表</a-button
-        >
-        <a-button
-          type="default"
-          @click="
-            setPrompt(
-              '制作一个精美的作品展示网站，适合设计师、摄影师、艺术家等创作者。包含作品画廊、项目详情页、个人简历、联系方式等模块。采用瀑布流或网格布局展示作品，支持图片放大预览和作品分类筛选。',
-            )
-          "
-          >作品展示网站</a-button
-        >
-      </div>
-
-      <!-- 我的作品 -->
-      <div class="section">
-        <h2 class="section-title">我的作品</h2>
-        <div class="app-grid">
-          <AppCard
-            v-for="app in myApps"
-            :key="app.id"
-            :app="app"
-            @view-chat="viewChat"
-            @view-work="viewWork"
-          />
-        </div>
-        <div class="pagination-wrapper">
-          <a-pagination
-            v-model:current="myAppsPage.current"
-            v-model:page-size="myAppsPage.pageSize"
-            :total="myAppsPage.total"
-            :show-size-changer="false"
-            :show-total="(total: number) => `共 ${total} 个应用`"
-            @change="loadMyApps"
-          />
+    <!-- 区块2: 蓝绿色区域 - 我的作品 -->
+    <div class="zone zone-teal">
+      <div class="container">
+        <div class="section">
+          <h2 class="section-title">我的作品</h2>
+          <div class="app-grid">
+            <AppCard
+              v-for="app in myApps"
+              :key="app.id"
+              :app="app"
+              @view-chat="viewChat"
+              @view-work="viewWork"
+            />
+          </div>
+          <div class="pagination-wrapper">
+            <a-pagination
+              v-model:current="myAppsPage.current"
+              v-model:page-size="myAppsPage.pageSize"
+              :total="myAppsPage.total"
+              :show-size-changer="false"
+              :show-total="(total: number) => `共 ${total} 个应用`"
+              @change="loadMyApps"
+            />
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- 精选案例 -->
-      <div class="section">
-        <h2 class="section-title">精选案例</h2>
-        <div class="featured-grid">
-          <AppCard
-            v-for="app in featuredApps"
-            :key="app.id"
-            :app="app"
-            :featured="true"
-            @view-chat="viewChat"
-            @view-work="viewWork"
-          />
-        </div>
-        <div class="pagination-wrapper">
-          <a-pagination
-            v-model:current="featuredAppsPage.current"
-            v-model:page-size="featuredAppsPage.pageSize"
-            :total="featuredAppsPage.total"
-            :show-size-changer="false"
-            :show-total="(total: number) => `共 ${total} 个案例`"
-            @change="loadFeaturedApps"
-          />
+    <!-- 区块3: 蓝色区域 - 精选案例 -->
+    <div class="zone zone-blue">
+      <div class="container">
+        <div class="section">
+          <h2 class="section-title">精选案例</h2>
+          <div class="featured-grid">
+            <AppCard
+              v-for="app in featuredApps"
+              :key="app.id"
+              :app="app"
+              :featured="true"
+              @view-chat="viewChat"
+              @view-work="viewWork"
+            />
+          </div>
+          <div class="pagination-wrapper">
+            <a-pagination
+              v-model:current="featuredAppsPage.current"
+              v-model:page-size="featuredAppsPage.pageSize"
+              :total="featuredAppsPage.total"
+              :show-size-changer="false"
+              :show-total="(total: number) => `共 ${total} 个案例`"
+              @change="loadFeaturedApps"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -379,71 +394,32 @@ onMounted(() => {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: transparent;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
 }
 
-/* 科技感网格背景 - 蓝色主题 */
-#homePage::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    linear-gradient(rgba(0, 56, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 56, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(rgba(0, 209, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 209, 255, 0.02) 1px, transparent 1px);
-  background-size:
-    100px 100px,
-    100px 100px,
-    20px 20px,
-    20px 20px;
-  pointer-events: none;
-  animation: gridFloat 20s ease-in-out infinite;
+/* 区块基础样式 */
+.zone {
+  position: relative;
+  width: 100%;
 }
 
-/* 动态光效 - 蓝色渐变 */
-#homePage::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(
-      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(0, 56, 255, 0.08) 0%,
-      rgba(0, 209, 255, 0.06) 40%,
-      transparent 80%
-    ),
-    linear-gradient(45deg, transparent 30%, rgba(0, 56, 255, 0.04) 50%, transparent 70%),
-    linear-gradient(-45deg, transparent 30%, rgba(0, 209, 255, 0.04) 50%, transparent 70%);
-  pointer-events: none;
-  animation: lightPulse 8s ease-in-out infinite alternate;
+/* 白色区域 - 顶部（纯白色，无颗粒感） */
+.zone-white {
+  padding-top: calc(64px + var(--spacing-md)); /* 导航栏高度 + 间距 */
+  padding-bottom: var(--spacing-xs);
 }
 
-@keyframes gridFloat {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(5px, 5px);
-  }
+/* 蓝绿色区域 - 我的作品（有颗粒感） */
+.zone-teal {
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-md);
 }
 
-@keyframes lightPulse {
-  0% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 0.7;
-  }
+/* 蓝色区域 - 精选案例 */
+.zone-blue {
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-2xl);
 }
 
 .container {
@@ -456,66 +432,55 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
+.zone-white .container {
+  padding-bottom: var(--spacing-sm);
+}
+
+.zone-teal .container {
+  padding-bottom: var(--spacing-sm);
+}
+
+.zone-blue .container {
+  padding-top: var(--spacing-sm);
+  padding-bottom: var(--spacing-2xl);
+}
+
 /* 移除居中光束效果 */
 
 /* 英雄区域 */
 .hero-section {
   text-align: center;
-  padding: var(--spacing-4xl) 0 var(--spacing-3xl);
-  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-2xl) 0 var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   color: var(--gray-800);
   position: relative;
   overflow: hidden;
 }
 
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(ellipse 800px 400px at center, rgba(0, 56, 255, 0.12) 0%, transparent 70%),
-    linear-gradient(45deg, transparent 30%, rgba(0, 209, 255, 0.05) 50%, transparent 70%),
-    linear-gradient(-45deg, transparent 30%, rgba(204, 48, 134, 0.04) 50%, transparent 70%);
-  animation: heroGlow 10s ease-in-out infinite alternate;
-}
-
-@keyframes heroGlow {
-  0% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.02);
-  }
-}
-
-@keyframes rotate {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
 .hero-title {
-  font-size: var(--font-size-5xl);
-  font-weight: var(--font-weight-bold);
-  margin: 0 0 var(--spacing-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-family-ink);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-extrabold);
+  margin: 0 0 var(--spacing-md);
   line-height: var(--line-height-tight);
-  background: var(--button-gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.025em;
+  color: var(--gray-900);
+  letter-spacing: 0.08em;
   position: relative;
   z-index: 2;
-  animation: titleShimmer 3s ease-in-out infinite;
-  background-size: 200% 200%;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.hero-logo {
+  width: 40px;
+  height: 40px;
+  margin: 0 var(--spacing-xs);
+  border-radius: 9999px;
+  padding: 4px;
+  background: radial-gradient(circle at 30% 30%, #2dd4bf, #06b6d4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 @keyframes titleShimmer {
@@ -529,81 +494,125 @@ onMounted(() => {
 }
 
 .hero-description {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   margin: 0;
-  opacity: 0.8;
-  color: var(--gray-600);
-  font-weight: var(--font-weight-medium);
+  color: var(--gray-500);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.04em;
   position: relative;
   z-index: 2;
 }
 
-/* 输入区域 */
+/* 输入区域 - 单层边框设计 */
 .input-section {
   position: relative;
   margin: 0 auto var(--spacing-md);
   max-width: 800px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--radius-2xl);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, rgba(233, 247, 255, 0.95) 0%, #fff 50%, rgba(232, 248, 255, 0.9) 100%);
+  border: 1px solid rgba(220, 235, 245, 0.8);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(68, 184, 193, 0.15);
+  padding: 0;
   transition: var(--transition-normal);
+  overflow: visible;
+}
+
+/* 右上角两条斜线装饰 */
+.input-section::before,
+.input-section::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(160, 180, 200, 0.5);
+  transform: rotate(45deg);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 长斜线 (内) */
+.input-section::before {
+  width: 20px;
+  top: 22px;
+  right: 12px;
+}
+
+/* 短斜线 (外) */
+.input-section::after {
+  width: 12px;
+  top: 14px;
+  right: 8px;
 }
 
 .prompt-input {
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--gray-200);
-  font-size: var(--font-size-base);
+  width: 100%;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 16px;
   font-family: var(--font-family-primary);
-  padding: var(--spacing-lg) 80px var(--spacing-lg) var(--spacing-lg);
-  background: var(--white);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: var(--transition-normal);
+  padding: 20px 80px 60px 24px;
+  background: transparent;
   resize: none;
+  min-height: 120px;
+  color: #4a5568;
+  caret-color: #333;
+}
+
+.prompt-input::placeholder {
+  color: #9ca3af;
 }
 
 .prompt-input:focus {
-  background: var(--white);
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
-  border-color: var(--primary-color);
+  background: transparent;
+  box-shadow: none !important;
+  border: none !important;
   outline: none;
 }
 
-.input-actions {
+/* 圆形发送按钮 */
+.send-btn {
   position: absolute;
-  bottom: 16px;
   right: 16px;
-  display: flex;
-  gap: var(--spacing-sm);
-  align-items: center;
-}
-
-.input-actions .ant-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
-  background: var(--button-gradient-primary);
+  bottom: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   border: none;
-  color: var(--white);
+  background: #1a1a1a;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  box-shadow: var(--shadow-md);
-  transition: var(--transition-fast);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.input-actions .ant-btn:hover {
-  background: var(--button-gradient-secondary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+.send-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.input-actions .ant-btn:active {
-  transform: translateY(0);
+.send-btn.is-disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.send-btn .arrow-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.send-btn .loading-icon {
+  font-size: 18px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* 快捷按钮 */
@@ -611,10 +620,10 @@ onMounted(() => {
   display: flex;
   gap: var(--spacing-md);
   justify-content: center;
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-md);
   margin-top: var(--spacing-sm);
   flex-wrap: wrap;
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-sm) 0;
 }
 
 .quick-actions .ant-btn {
@@ -639,7 +648,7 @@ onMounted(() => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(110, 231, 183, 0.25), rgba(249, 168, 212, 0.25), transparent);
   transition: left 0.5s;
 }
 
@@ -649,15 +658,21 @@ onMounted(() => {
 
 .quick-actions .ant-btn:hover {
   background: var(--gray-50);
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+  border-color: #f9a8d4 !important;
+  color: #ec4899 !important;
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
+.quick-actions .ant-btn:focus,
+.quick-actions .ant-btn:focus-visible {
+  outline: 2px solid #f9a8d4;
+  outline-offset: 2px;
+}
+
 /* 区域标题 */
 .section {
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-md);
   background: var(--card-gradient);
   backdrop-filter: var(--glass-backdrop);
   border: var(--glass-border);
@@ -665,6 +680,10 @@ onMounted(() => {
   box-shadow: var(--shadow-lg);
   padding: var(--spacing-xl);
   transition: var(--transition-normal);
+}
+
+.zone-blue .section {
+  margin-bottom: var(--spacing-2xl);
 }
 
 .section:hover {

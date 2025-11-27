@@ -14,9 +14,9 @@
         <!-- Logo和标题区域 -->
         <div class="docs-sider-header">
           <div class="logo-container" @click="goHome">
-            <img v-if="!collapsed" class="logo-img" src="@/assets/logo.png" alt="Logo" />
+            <img v-if="!collapsed" class="logo-img" src="@/assets/logo.svg" alt="NoCode Logo" />
             <BookOutlined v-else class="docs-icon" />
-            <span v-if="!collapsed" class="docs-title">AI Code Mother</span>
+            <span v-if="!collapsed" class="docs-title">NoCode</span>
           </div>
           <a-button
             v-if="!collapsed"
@@ -119,7 +119,7 @@
 
         <!-- 底部版权 -->
         <div class="docs-footer">
-          <p>© 2025 AI Code Mother. All rights reserved.</p>
+          <p>© 2025 NoCode. All rights reserved.</p>
         </div>
       </a-layout>
     </a-layout>

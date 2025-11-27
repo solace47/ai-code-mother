@@ -3,7 +3,7 @@
     <div class="footer-content">
       <div class="footer-main">
         <div class="footer-brand">
-          <h3 class="brand-title">AI Code Mother</h3>
+          <h3 class="brand-title">NoCode</h3>
           <p class="brand-desc">让 AI 为你生成专业代码</p>
         </div>
 
@@ -36,18 +36,7 @@
 
       <div class="footer-bottom">
         <div class="copyright">
-          © 2025 AI Code Mother. All rights reserved.
-        </div>
-        <div class="author">
-          Made with ❤️ by
-          <a
-            href="https://github.com/solace47"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="author-link"
-          >
-            solace47
-          </a>
+          © 2025 NoCode. All rights reserved.
         </div>
       </div>
     </div>
@@ -60,31 +49,11 @@
 
 <style scoped>
 .footer {
-  background: linear-gradient(180deg, rgba(249, 250, 251, 0.8) 0%, rgba(255, 255, 255, 0.95) 100%);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(236, 72, 153, 0.1);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.04);
+  background: transparent;
   padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
-  margin-top: var(--spacing-xl);
+  margin-top: 0;
   position: relative;
-  overflow: hidden;
-}
-
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #ec4899 0%, #f97316 50%, #ec4899 100%);
-  background-size: 200% 100%;
-  animation: gradientMove 3s ease infinite;
-}
-
-@keyframes gradientMove {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  z-index: 1;
 }
 
 .footer-content {
